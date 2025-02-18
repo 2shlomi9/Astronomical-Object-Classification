@@ -1,0 +1,128 @@
+import numpy as np
+from utils import prepare_data, EDA_graphs, plot_svm
+import pandas as pd
+from sklearn.svm import SVC
+from sklearn.decomposition import PCA
+from models import svm
+from sklearn.metrics import classification_report, accuracy_score
+import matplotlib.pyplot as plt  
+
+data_path = "Dataset/Skyserver.csv"
+
+data = pd.read_csv(data_path)
+
+# -------------------- Show Graphs --------------------
+# EDA_graphs(data)
+
+# -------------------- Split and Prepare Data --------------------
+x_train, x_test, y_train, y_test, classes, feature_names = prepare_data(data)
+
+
+svm_model = SVC(kernel='linear', random_state=42)  
+
+svm_model.fit(x_train, y_train)
+
+y_pred_train = svm_model.predict(x_train)
+y_pred_test = svm_model.predict(x_test)
+
+print("Train Accuracy:", accuracy_score(y_train, y_pred_train))
+print("\nClassification Report (Train):\n", classification_report(y_train, y_pred_train))
+
+print("Test Accuracy:", accuracy_score(y_test, y_pred_test))
+print("\nClassification Report(Test):\n", classification_report(y_test, y_pred_test))
+
+coefficients = svm_model.coef_
+
+plt.figure(figsize=(10, 6))
+plt.barh(range(len(coefficients[0])), coefficients[0], align='center')
+plt.yticks(range(len(coefficients[0])), feature_names)
+plt.xlabel('Weight Value')
+plt.title('Feature Weights for SVM Linear Kernel')
+plt.show()
+
+
+pca = PCA(n_components=2)
+
+x_train_pca = pca.fit_transform(x_train)
+x_test_pca = pca.transform(x_test)
+
+
+explained_variance = pca.explained_variance_ratio_
+
+print("Explained Variance Ratio:", pca.explained_variance_ratio_)
+print("PCA Components:", pca.components_)
+
+plt.figure(figsize=(8, 5))
+plt.plot(np.cumsum(explained_variance), marker='o')
+plt.xlabel('Number of Components')
+plt.ylabel('Cumulative Explained Variance')
+plt.title('Explained Variance by Number of Components')
+plt.show()
+
+svm_model.fit(x_train_pca, y_train)
+
+y_pred_train = svm_model.predict(x_train_pca)
+y_pred_test = svm_model.predict(x_test_pca)
+
+print("Train Accuracy:", accuracy_score(y_train, y_pred_train))
+print("\nClassification Report (Train):\n", classification_report(y_train, y_pred_train))
+
+print("Test Accuracy:", accuracy_score(y_test, y_pred_test))
+print("\nClassification Report(Test):\n", classification_report(y_test, y_pred_test))
+
+
+
+features_to_pca = ['u', 'g', 'r', 'i', 'z']
+X_train_pca_input = x_train[:, :5] 
+X_test_pca_input = x_test[:, :5]    
+
+
+pca = PCA(n_components=2)  
+X_train_pca = pca.fit_transform(X_train_pca_input)
+X_test_pca = pca.transform(X_test_pca_input)
+
+
+print("Explained Variance Ratio:", pca.explained_variance_ratio_)
+print("PCA Components:", pca.components_)
+
+
+plt.scatter(X_train_pca[:, 0], X_train_pca[:, 1], c=y_train)
+plt.title('PCA: u, g, r, i, z')
+plt.xlabel('Principal Component 1')
+plt.ylabel('Principal Component 2')
+plt.show()
+
+
+x_train_pca_combined = np.hstack((X_train_pca, x_train[:, 5:])) 
+x_test_pca_combined = np.hstack((X_test_pca, x_test[:, 5:])) 
+
+
+svm_model = SVC(kernel='linear', random_state=42)
+svm_model.fit(x_train_pca_combined, y_train)
+
+
+y_pred_train_pca = svm_model.predict(x_train_pca_combined)
+y_pred_test_pca = svm_model.predict(x_test_pca_combined)
+
+print("\nAfter PCA - Train Accuracy:", accuracy_score(y_train, y_pred_train_pca))
+print("\nAfter PCA - Classification Report (Train):\n", classification_report(y_train, y_pred_train_pca))
+
+print("\nAfter PCA - Test Accuracy:", accuracy_score(y_test, y_pred_test_pca))
+print("\nAfter PCA - Classification Report (Test):\n", classification_report(y_test, y_pred_test_pca))
+
+
+features_to_pca = ['u', 'g', 'r', 'i', 'z']
+feature_indices = [feature_names.index(f) for f in features_to_pca]
+
+x_train_pca ,x_test_pca = apply_pca(feature_indices, x_train, x_test)
+
+pca_feature_names = [feature_names[i] for i in range(len(feature_names)) if feature_names[i] not in features_to_pca]
+pca_feature_names.append('PC1')
+pca_feature_names.append('PC2')
+
+Explained Variance Ratio: [0.46318419 0.29677835 0.10057728 0.08781913 0.04428894 0.0043548
+ 0.0018281  0.00073155]
+0.9995623363424917
+
+Explained Variance Ratio: [0.46318419 0.29677835 0.10057728 0.08781913 0.04428894]
+0.992647885005474
