@@ -64,32 +64,46 @@ def plot_overfitting_analysis(results, models):
     plt.show()
 
 
-def EDA_graphs(data):
+def EDA_graphs(data, type='histogram'):
 
     col=[ 'ra', 'dec', 'u', 'g', 'r', 'i', 'z', 'run', 'camcol', 'field', 'redshift', 'plate', 'mjd', 'fiberid', "specobjid"]
-    plt.subplots(4,4,figsize=(15,15)) 
-    for i in range(len(col)):  
-        plt.subplot(4,4,i+1)
-        sns.histplot(data,x=col[i],hue="class",element="step")
-        plt.xlabel(col[i])
-    plt.show()
 
-    plt.subplots(4,4,figsize=(15,15)) 
-    for i in  range(len(col)):  
-        plt.subplot(4,4,i+1)
-        sns.boxplot(data,x=col[i])
-        plt.xlabel(col[i])
-    plt.show()
+    if type == 'histogram':  # Plots the distribution of a numeric variable
+        plt.figure(figsize=(15, 15))  
+        for i in range(len(col)):  
+            plt.subplot(4,4,i+1)
+            sns.histplot(data,x=col[i],hue="class",element="step")
+            plt.xlabel(col[i])
+        plt.show()
 
-    plt.figure(figsize=(10, 6))  
-    sns.heatmap(data[col].corr(), annot=True, annot_kws={'size':6}, fmt='.2f')  
-    plt.show()
+    if type == 'DensityPlot':  # Plots the density distribution of a continuous variable
+        plt.figure(figsize=(15, 15))  
+        for i in range(len(col)):
+            plt.subplot(4, 4, i+1)
+            sns.kdeplot(data=data, x=col[i])  
+        plt.tight_layout()
+        plt.show()
 
-    sns.pairplot(data=data[['u', 'g', 'r', 'i', 'z','class']],hue='class')
-    plt.show()
+    if type == 'boxplot':  # The data shows varying levels of dispersion across features
+        plt.figure(figsize=(15, 15))  
+        for i in  range(len(col)):  
+            plt.subplot(4,4,i+1)
+            sns.boxplot(data,x=col[i])
+            plt.xlabel(col[i])
+        plt.show()
 
-    data['class'].value_counts().plot(kind='bar')  
-    plt.show()
+    if type == 'heatmap':  # represents a correlation matrix between various variables
+        plt.figure(figsize=(10, 6))  
+        sns.heatmap(data[col].corr(), annot=True, annot_kws={'size':6}, fmt='.2f')  
+        plt.show()
+
+    if type == 'scatterplot':  # Used to compare pairs of features (u, g, r, i, z)
+        sns.pairplot(data=data[['u', 'g', 'r', 'i', 'z','class']],hue='class')
+        plt.show()
+
+    if type == 'classes':  # Bar Plot of Class Distribution
+        data['class'].value_counts().plot(kind='bar')  
+        plt.show()
 
 # ---------------- Plot Models Resualts Functions ---------------
 

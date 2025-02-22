@@ -26,12 +26,12 @@ def svm(x_train, y_train, x_val, x_test):
 
     return best_model, y_pred_train, y_pred_val, y_pred_test
 
-def knn(x_train, y_train, x_val, x_test):
+def knn(x_train, y_train, x_val, x_test, min_neighbors=3):
 
     knn_model = KNeighborsClassifier(weights = 'uniform')
 
     param_grid = {
-        'n_neighbors': range(3, 15, 2),  
+        'n_neighbors': range(min_neighbors, 15, 2),  
         'p': [1, 2, 3]  
     }
 
@@ -67,20 +67,23 @@ def logistic_regression(x_train, y_train, x_val, x_test):
 
     return best_model, y_pred_train, y_pred_val, y_pred_test
 
-def decision_tree(x_train, y_train, x_val, x_test):
 
+
+def decision_tree(x_train, y_train, x_val, x_test):
+    
     dt_model = DecisionTreeClassifier()
+    
     param_grid = {
         'criterion': ['gini', 'entropy'],
-        'max_depth': range(2, 21),
-        'min_samples_split': range(2, 20), 
-        'min_samples_leaf': range(2, 20)
+        'max_depth': (2, 21),
+        'min_samples_split': (2, 20), 
+        'min_samples_leaf': (2, 20)
     }
 
-    grid_search = GridSearchCV(dt_model, param_grid, cv=5)
-    grid_search.fit(x_train, y_train)
+    bayes_search = BayesSearchCV(dt_model, param_grid, cv=5)
+    bayes_search.fit(x_train, y_train)
 
-    best_model = grid_search.best_estimator_
+    best_model = bayes_search.best_estimator_
 
     print("Best model:", best_model)
 
@@ -90,29 +93,6 @@ def decision_tree(x_train, y_train, x_val, x_test):
 
     return best_model, y_pred_train, y_pred_val, y_pred_test
 
-# def random_forest(x_train, y_train, x_val, x_test):
-
-#     rf_model = RandomForestClassifier(random_state=42)
-
-#     param_grid = {
-#         'n_estimators':range(10, 110, 10),  
-#         'max_depth': range(2, 21),  
-#         'min_samples_split': range(2, 20), 
-#         'min_samples_leaf': range(2, 20)
-#     }
-
-#     grid_search = GridSearchCV(rf_model, param_grid, cv=5)
-#     grid_search.fit(x_train, y_train)
-
-#     best_model = grid_search.best_estimator_
-
-#     print("Best model:", best_model)
-
-#     y_pred_train = best_model.predict(x_train)
-#     y_pred_val = best_model.predict(x_val)
-#     y_pred_test = best_model.predict(x_test)
-
-#     return best_model, y_pred_train, y_pred_val, y_pred_test
 def random_forest(x_train, y_train, x_val, x_test):
     
     rf_model = RandomForestClassifier(random_state=42)
