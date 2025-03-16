@@ -280,5 +280,6 @@ This file contains all the dependencies required to run the project.
 #### **Notebook/astronomical-object-classification.ipynb:** 
 An IPython Notebook (.ipynb) is provided, allowing for easy visualization of all outputs without the need to run 
 the code manually. 
+
 ---
 
