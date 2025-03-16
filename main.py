@@ -29,19 +29,19 @@ print('\nData statistics:')
 print(data.describe())   
 
 # -------------------- Show Graphs --------------------
-# EDA_graphs(data, type='histogram') # Plots the distribution of a numeric variable
+EDA_graphs(data, type='histogram') # Plots the distribution of a numeric variable
 
-# EDA_graphs(data, type='DensityPlot') # Plots the density distribution of a continuous variable
+EDA_graphs(data, type='DensityPlot') # Plots the density distribution of a continuous variable
 
-# EDA_graphs(data, type='boxplot') # The data shows varying levels of dispersion across features
+EDA_graphs(data, type='boxplot') # The data shows varying levels of dispersion across features
 
-# EDA_graphs(data, type='heatmap') # represents a correlation matrix between various variables
+EDA_graphs(data, type='heatmap') # represents a correlation matrix between various variables
 
-# EDA_graphs(data, type='scatterplot') # Used to compare pairs of features (u, g, r, i, z)
+EDA_graphs(data, type='scatterplot') # Used to compare pairs of features (u, g, r, i, z)
 
-# EDA_graphs(data, type='classes') # Bar Plot of Class Distribution
+EDA_graphs(data, type='classes') # Bar Plot of Class Distribution
 
-# data = data.drop(columns=['specobjid']) # drop data with Correlation 1.0 with another feature (heatmap show that specobjid, plate with 1.0 Correlation)
+data = data.drop(columns=['specobjid']) # drop data with Correlation 1.0 with another feature (heatmap show that specobjid, plate with 1.0 Correlation)
 
 
 # ---------------------------- Split & Prepare Data ----------------------------
@@ -146,7 +146,7 @@ results["Without PCA"][model_name] = (accuracy_score(y_train, y_pred_train), acc
 
 
 # ---------------------------- Apply PCA & Run Models ----------------------------
-x_train_pca, x_val_pca, x_test_pca = apply_pca(x_train, x_val, x_test, dim=9) # Reduce to 8 dimenation
+x_train_pca, x_val_pca, x_test_pca = apply_pca(x_train, x_val, x_test, dim=9) # Reduce to 9 dimenation
 feature_names = ['vec1', 'vec2', 'vec3', 'vec4', 'vec5', 'vec6', 'vec7', 'vec8', 'vec9']
 
 # ------- Running SVM With PCA -------
