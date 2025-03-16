@@ -139,7 +139,7 @@ Therefore, we prefer to use a decision tree (Full explanation in the file - Astr
 #### **Decision Tree - Important Features:**
 ![png](images/astronomical-object-classification_46_1.png)
 
-### **Best Model With PCA: SVM**
+### **Best Model With PCA & Minimal Overfitting: SVM**
 - **Train Accuracy:** 98.34%
 - **Validation Accuracy:** 98.56%
 - **Test Accuracy:** 98.15%
@@ -198,7 +198,7 @@ Therefore, we prefer to use a random Forest (Full explanation in the file - Astr
 #### **Random Forest - Important Features:**
 ![png](images/astronomical-object-classification_66_1.png)
 
-### **Best Model With PCA & Minimal Overfitting:: SVM**
+### **Best Model With PCA & Minimal Overfitting: SVM**
 - **Train Accuracy:** 98.18%
 - **Validation Accuracy:** 98.56%
 - **Test Accuracy:** 98.00%
