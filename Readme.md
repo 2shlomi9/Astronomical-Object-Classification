@@ -76,7 +76,7 @@ Most numerical variables (g, r, i, z) exhibit a normal-like distribution, while 
 
 ## Prepare Data
 
-### **1. Convert **
+### **1. Convert**
 - No missing values were found in the dataset.
 
 ### **2. Feature Selection**
